@@ -1,6 +1,7 @@
 services:
   paymybuddy-backend:
     build: .
+    image: localhost:6565/paymybuddy-backend  # Utiliser l’image localhost:6565/paymybuddy-backend du registre privé
     container_name: paymybuddy-backend
     restart: always #permet à Docker de redémarrer automatiquement un conteneur s'il s'arrête accidentellement
     depends_on:
@@ -18,7 +19,8 @@ services:
       - paymybuddy-network 
 
   paymybuddy-db:
-    image: mysql:8.0
+    #image: mysql:8.0
+    image: localhost:6565/mysql  # Utiliser l’image localhost:6565/mysql du registre privé
     container_name: paymybuddy-db
     restart: always #permet à Docker de redémarrer automatiquement un conteneur s'il s'arrête accidentellement.
     environment:
