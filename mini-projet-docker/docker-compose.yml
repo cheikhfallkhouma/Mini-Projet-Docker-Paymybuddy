@@ -1,1 +1,47 @@
+services:
+  paymybuddy-backend:
+    build: .
+    container_name: paymybuddy-backend
+    restart: always #permet à Docker de redémarrer automatiquement un conteneur s'il s'arrête accidentellement
+    depends_on:
+      paymybuddy-db:
+        condition: service_healthy  # ✅ Attend que MySQL soit prêt
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://paymybuddy-db:3306/paymybuddy
+      SPRING_DATASOURCE_USERNAME: paymybuddy
+      SPRING_DATASOURCE_PASSWORD: secretpassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
 
+    ports:
+      - "8080:8080"
+    networks:
+      - paymybuddy-network 
+
+  paymybuddy-db:
+    image: mysql:8.0
+    container_name: paymybuddy-db
+    restart: always #permet à Docker de redémarrer automatiquement un conteneur s'il s'arrête accidentellement.
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: paymybuddy
+      MYSQL_USER: paymybuddy
+      MYSQL_PASSWORD: secretpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - paymybuddy_mysql_data:/var/lib/mysql
+    networks:
+      - paymybuddy-network 
+    healthcheck:  # ✅ Vérifie que MySQL est prêt
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  paymybuddy_mysql_data:
+    driver: local  #Cela permet d'indiquer clairement que le volume est géré par Docker
+
+networks:
+  paymybuddy-network:
+    driver: bridge
