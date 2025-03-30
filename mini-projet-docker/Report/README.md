@@ -1,4 +1,4 @@
-Conteneurisation des micro services backend Spring Boot et la bdd MySQL.
+1. Conteneurisation des micro services backend Spring Boot et la bdd MySQL.
 
 ![alt text](image.png)
 
@@ -41,8 +41,10 @@ Je viens de créer un nouveau profil.
 
 Ceci valide la première partie conteneurisation et test des micro services.
 
-Registre Docker :
-Création d’un registre privé : 
+2. Registre Docker
+
+Création d’un registre privé :
+
 J’ai créé un registre privé nommé registry qui tourne sur localhost:6565.
 
 ![alt text](image-10.png)
